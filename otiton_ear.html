@@ -5,18 +5,21 @@
     </head>
     <body>
     <img id="input-image" style="max-width: 100%;" src="./img/sample.jpg" />
+    <div id="result" style="margin-top: 1em; font-size: 1.2em;"></div>
     <script>
         /*window.addEventListener("message", async (event) => {
             const img = document.getElementById('input-image');
             img.src = event.data;*/
-            
+
             const img = document.getElementById('input-image');
             img.onload = async () => {
                 const tensor = tf.browser.fromPixels(img).resizeBilinear([300, 300]).expandDims(0).toFloat().div(255.0);
 
                 const model = await tf.loadGraphModel('./model/model.json');
                 const result = model.predict(tensor);
-                result.print();
+                const data = await result.data(); // Float32Array
+                const resultDiv = document.getElementById('result');
+                resultDiv.innerText = '추론 결과: ' + Array.from(data).join(', ');
             };
         //});
     </script>
