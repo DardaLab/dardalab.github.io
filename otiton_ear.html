@@ -18,8 +18,8 @@
                 const model = await tf.loadGraphModel('./model/model.json');
                 const result = model.predict(tensor);
                 const data = await result.data(); // Float32Array
-                const maxValue = Math.max(...data[0]);
-                const maxIndex = data[0].indexOf(maxValue);
+                const maxValue = Math.max(...data);
+                const maxIndex = data.indexOf(maxValue);
                 const classes = [
                     "정상", "만성중이염", "유착성중이염",
                     "삼출성중이염", "진주종성중이염",
