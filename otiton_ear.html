@@ -18,8 +18,15 @@
                 const model = await tf.loadGraphModel('./model/model.json');
                 const result = model.predict(tensor);
                 const data = await result.data(); // Float32Array
+                const maxValue = Math.max(...prediction[0]);
+                const maxIndex = prediction[0].indexOf(maxValue);
+                const classes = [
+                    "정상", "만성중이염", "유착성중이염",
+                    "삼출성중이염", "진주종성중이염",
+                    "선천성진주종", "외이도염 및 고막염"
+                ];
                 const resultDiv = document.getElementById('result');
-                resultDiv.innerText = '추론 결과: ' + Array.from(data).join(', ');
+                resultDiv.innerText = `예측된 중이염 유형: ${classes[maxIndex]} (확률: ${(maxValue).toFixed(2)}%)`;
             };
         //});
     </script>
